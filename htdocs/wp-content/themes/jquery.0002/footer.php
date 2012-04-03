@@ -2,10 +2,10 @@
 
   <div id="jq-footer" class="jq-clearfix">
     <div id="jq-credits">
-<p id="jq-copyright">&copy; 2010 <a href="http://jquery.org/">The jQuery Project</a></p>
+<p id="jq-copyright">&copy; <?= date('Y'); ?> <a href="http://jquery.org/">The jQuery Project</a></p>
 <p id="jq-hosting">Sponsored by <a href="http://mediatemple.net" class="jq-mediaTemple">Media Temple</a> and <a href="http://jquery.org/sponsors">others</a>.</p>
     </div>
-  
+
     <div id="jq-footerNavigation">
       <ul>
         <li class="jq-download jq-first"><a href="http://docs.jquery.com/Downloading_jQuery">Download</a></li>
