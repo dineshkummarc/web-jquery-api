@@ -123,6 +123,7 @@ echo '<?xml version="1.0" ?>';
         'banner' => get_post_meta($post->ID, 'Banner')
       );
       $notes_meta = get_post_meta($post->ID, 'Notemeta');
+      $placeholders = array();
 
       if ( !empty($notes_meta) ) {
         foreach ($notes_meta as $meta) {
@@ -140,7 +141,8 @@ echo '<?xml version="1.0" ?>';
           foreach ($values as $val):
             $note = get_reus($val, $reus_vars);
             $note = str_replace('%3D', '=', $note);
-            $notes_output .= '<note type="' . $key . '">' . $note . '</note>';
+            $note_id = strtolower( preg_replace('/[\-_ ]+/', '-', $val) );
+            $notes_output .= '<note id="' . $note_id . '" type="' . $key . '">' . $note . '</note>';
           endforeach;
         }
       endforeach;
@@ -150,9 +152,7 @@ echo '<?xml version="1.0" ?>';
 
     $tentry = preg_replace("!</?entries>!", "", preg_replace("!</entry>!", "$cats_notes</entry>", $theContent));
 
-    if ( ks_in_plugins_category($post->ID) ):
-      $pluginlist[] = $tentry;
-    else:
+    if ( !ks_in_plugins_category($post->ID) ):
       $corelist[] = $tentry;
     endif;
 
@@ -161,9 +161,4 @@ echo '<?xml version="1.0" ?>';
   <entries>
     <?php echo implode("\n", $corelist) ?>
   </entries>
-  <?php if ( count($pluginlist) ): ?>
-  <plugins>
-    <?php echo implode("\n", $pluginlist) ?>
-  </plugins>
-  <?php endif; ?>
 </api>
