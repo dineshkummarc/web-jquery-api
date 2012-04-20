@@ -133,69 +133,8 @@ if ($html = $xp->transformToXML($xml_doc)) {
 <div class="jq-box roundBottom">
   <p>Need help with <strong><?= the_title(); ?></strong> or have a question about it? Visit the <a href="http://forum.jquery.com/">jQuery Forum</a> or the <strong>#jquery</strong> channel on <a href="irc://irc.freenode.net/">irc.freenode.net</a>.</p>
   <p>Think you've discovered a jQuery bug related to <strong><?= the_title(); ?></strong>? <a href="http://docs.jquery.com/How_to_Report_Bugs">Report it</a> to the jQuery core team.</p>
+  <p>Found a problem with this documentation? <a href="https://github.com/jquery/api.jquery.com/issues">Report it</a> on the GitHub issue tracker</p>
 
-  <?php
-  $apireport = ks_api_report($_POST);
-  switch ( $apireport['status'] ) {
-    case 'unsent':
-      $preform = '<p>Found a problem with this documentation? <a id="api-error" href="#rpt-issue">Report it</a> to the jQuery API team.</p>';
-      $postform = <<<SCRPT
-        <script>jQuery(function($) { $('#rpt-issue').hide();$('#api-error').bind('click',function(e) {e.preventDefault();$('#rpt-issue').slideDown().find('button').prop('disabled', false);});});</script>
-SCRPT;
-      $showform = true;
-      break;
-
-    case 'error':
-      $showform = true;
-      break;
-    default:
-      $preform = '';
-      $showform = false;
-      $postform = '';
-      break;
-  }
-
-  if ( !$showform ):
-    echo $apireport['msg'];
-  else:
-    $errs = $apireport['errors'];
-
-    echo $preform;
-  ?>
-    <form id="rpt-issue" action="#comments" method="post">
-      <?php
-      echo $apireport['msg'];
-      ?>
-      <fieldset>
-        <div style="position:absolute;left:-1000em;">
-          <input type="text" name="address" value="">
-          <input type="hidden" name="date" value="<?= date('d M Y'); ?>">
-        </div>
-        <div<?php ks_err('fullname',$errs); ?>>
-          <label for="api_name">Name:</label>
-          <input name="fullname" id="api_name" value="<?= ks_field_value('fullname'); ?>">
-        </div>
-        <div<?php ks_err('email',$errs); ?>>
-          <label for="api_email">Email Address:</label>
-          <input name="email" id="api_email" value="<?= ks_field_value('email'); ?>">
-        </div>
-        <div<?php ks_err('api_title',$errs); ?>>
-          <label for="api_title">Subject:</label>
-          <input id="api_title" name="api_title" value="Documentation problem with <?= the_title(); ?>" />
-        </div>
-        <div<?php ks_err('api_comment',$errs); ?>>
-          <label for="api_comment">Comment:</label>
-          <textarea id="api_comment" name="api_comment"><?= ks_field_value('api_comment'); ?></textarea>
-        </div>
-        <button type="submit" disabled="disabled">Report</button>
-      </fieldset>
-    </form>
-
-  <?php
-    echo $postform;
-  endif;
-
-  ?>
   <!-- <ul class="comment-instructions">
     <li><h3 style="margin-top: 0; font-size: 1.4em">Support requests, bug reports, and off-topic comments will be <em>deleted</em> without warning.</h3></li>
     <li>Please do post corrections or additional examples for <?php echo $title; ?> below. We aim to quickly move corrections into the documentation.</li>
